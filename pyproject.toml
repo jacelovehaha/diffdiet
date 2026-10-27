@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diffdiet"
+version = "0.1.0"
+description = "A minimal-diff guard for AI coding agents: an agent rules pack, unified-diff metrics, a transparent diet score, and a CI budget gate."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "diffdiet contributors" }]
+keywords = ["ai-agents", "code-review", "diff", "ci", "guardrails", "minimal-diff"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
+[project.scripts]
+diffdiet = "diffdiet.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

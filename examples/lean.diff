@@ -1,0 +1,19 @@
+diff --git a/src/greet.py b/src/greet.py
+--- a/src/greet.py
++++ b/src/greet.py
+@@ -1,9 +1,14 @@
+ """Tiny greeting CLI."""
+ 
+ 
+ def main():
+     name = input("Your name: ")
+-    print("Hello!")
++    print(greet(name))
++
++
++def greet(name):
++    cleaned = name.strip() or "friend"
++    return f"Hello, {cleaned}!"
+ 
+ if __name__ == "__main__":
+     main()

@@ -1,0 +1,85 @@
+diff --git a/src/greet.py b/src/greet.py
+--- a/src/greet.py
++++ b/src/greet.py
+@@ -1,9 +1,12 @@
+ """Tiny greeting CLI."""
+ 
++from greet_framework import Greeter, load_config
++
+ 
+ def main():
+     name = input("Your name: ")
+-    print("Hello!")
++    greeter = Greeter(load_config())
++    print(greeter.greet(name))
+ 
+ if __name__ == "__main__":
+     main()
+diff --git a/src/greet_framework.py b/src/greet_framework.py
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/src/greet_framework.py
+@@ -0,0 +1,52 @@
++"""Configurable greeting framework (sample code)."""
++
++from abc import ABC, abstractmethod
++
++import fancylib
++
++
++class AbstractGreetingStrategy(ABC):
++    """Base class for pluggable greeting strategies."""
++
++    @abstractmethod
++    def render(self, name):
++        raise NotImplementedError
++
++
++class FormalGreetingStrategy:
++    """A strategy that greets formally."""
++
++    def render(self, name):
++        return f"Good day to you, {name}."
++
++
++class GreetingTemplateEngine:
++    """Renders greeting templates, with a result cache."""
++
++    def __init__(self, template="Hello, {name}!"):
++        self.template = template
++        self._cache = {}
++
++    def render(self, name):
++        if name not in self._cache:
++            self._cache[name] = fancylib.render(self.template, name=name)
++        return self._cache[name]
++
++
++def build_strategy_registry():
++    """Return the registry of strategy names (unused so far)."""
++    return {"formal": "formal"}
++
++
++def load_config():
++    return {"template": "Hello, {name}!", "locale": "en"}
++
++
++class Greeter:
++    """The public entry point of the framework."""
++
++    def __init__(self, config):
++        self.template = config["template"]
++
++    def greet(self, name):
++        return fancylib.render(self.template, name=name.strip() or "friend")
+diff --git a/pyproject.toml b/pyproject.toml
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -3,5 +3,6 @@
+ [project]
+ name = "greeter"
+ dependencies = [
+     "click>=8",
++    "fancylib>=2.0",
+ ]
